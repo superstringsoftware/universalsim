@@ -7,11 +7,21 @@ namespace S3.UniversalSim.Model
 	{
 		public enum ResTypes
 		{
-			ENERGY,
+			TIME = 0, // Special resources
+            ENERGY, 
 			WATER,
-			COAL,
+
+			COAL = 10, // "mined" resources start from 10
 			IRON,
-			GAS
+			GAS,
+			SILICON, // sand basically, but is needed for glass also
+
+			CONCRETE = 100, // manufactured resources start from 100
+			STEEL,
+			GLASS,
+
+			BREAD = 1000, // consumer goods start from 1000
+			COMPUTERS
 		}
 
 		public ResTypes ResType { get; }

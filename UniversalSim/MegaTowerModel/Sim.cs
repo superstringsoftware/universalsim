@@ -33,6 +33,40 @@ public class Sim
 
     public string Name { get; set; }
 
+    private BuildingHousing? _home;
+    /// <summary>
+    /// Home building for the Sim. Processing logic here instead of a building.
+    /// </summary>
+    public BuildingHousing? Home {
+        get { return _home; }
+        set
+        {
+            if (value != null)
+            {
+                // setting a home to a new home
+                if (_home != null)
+                {
+                    // current home is not null, so we need to remove sim from there
+                    _home.Sims.Remove(this);
+                }
+                _home = value;
+                _home.Sims.Add(this);
+            } else
+            {
+                // new home is null, so simply need to remove from the current home
+                if (_home != null)
+                {
+                    _home.Sims.Remove(this);
+                }
+                _home = value;
+            }
+        }
+    }
+    /// <summary>
+    /// Work building for the Sim
+    /// </summary>
+    public BuildingJobs? Work { get; set; }
+
     public Sim(string name, float age, float health, float iq, float education, float happiness, float salary, float savings)
     {
         Name = name;

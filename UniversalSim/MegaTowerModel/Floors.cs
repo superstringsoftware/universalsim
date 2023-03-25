@@ -1,8 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 
+
+
 namespace S3.UniversalSim.Model
 {
+    /*
+    public class Floor
+    {
+        public int Num { get; set; }
+        public List<Building> Buildings { get; }
+
+        public Floor()
+        {
+            Buildings = new List<Building>();
+        }
+    }*/
+
     /// <summary>
     /// Base building class
     /// </summary>
@@ -84,6 +98,11 @@ namespace S3.UniversalSim.Model
             Level = level;
         }
 
+        /// <summary>
+        /// Calculates resource consumption in one turn by adding
+        /// base consumption and per sim
+        /// </summary>
+        /// <returns>Consumption Resource vector</returns>
         public override List<Resource> CalculateConsumption()
         {
             List<Resource> res = Resource.ScalarMulList(OPEX, 1);
@@ -95,6 +114,21 @@ namespace S3.UniversalSim.Model
                 res = Resource.AddLists(res, Resource.ScalarMulList(OPEXSim, MathF.Log10(fix)));
             }
             return res;
+        }
+
+        /// <summary>
+        /// Make a Sim inhabit this house
+        /// </summary>
+        /// <param name="s"></param>
+        public void AddSim(Sim s)
+        {
+            Sims.Add(s);
+            s.Home = this;
+        }
+
+        public void RemoveSim(Sim s)
+        {
+
         }
     }
 
@@ -129,6 +163,26 @@ namespace S3.UniversalSim.Model
             Employees[Sim.EducationLevel.College] = new List<Sim>();
             Employees[Sim.EducationLevel.Master] = new List<Sim>();
             Employees[Sim.EducationLevel.PhD] = new List<Sim>();
+        }
+
+        /// <summary>
+        /// how many taken jobs of a given level there are
+        /// </summary>
+        /// <param name="lvl"></param>
+        /// <returns></returns>
+        public int TakenJobs(Sim.EducationLevel lvl)
+        {
+            return Employees[lvl].Count();
+        }
+
+        /// <summary>
+        /// how many free jovs of a given level there are
+        /// </summary>
+        /// <param name="lvl"></param>
+        /// <returns></returns>
+        public int FreeJobs(Sim.EducationLevel lvl)
+        {
+            return (Jobs[lvl].Item1 - TakenJobs(lvl));
         }
 
     }
